@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelvopz Luxury Cars</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"> <!-- Import Poppins font -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        /* Apply Poppins font only to the navbar brand */
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif; /* Apply Poppins font to navbar brand */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header with Navbar -->
+<header class="hero-section">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">Kelvopz Luxury Cars</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html">Register/Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Cart</a></li>
+                    <li class="nav-item"><a class="nav-link" href="orders.html">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="videos/Goldfinger_Episode_Snippet.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="hero-text">
+        <h1>Welcome to Kelvopz Luxury Cars</h1>
+        <p>Experience the ultimate in craftsmanship and performance</p>
+        <a href="#models" class="btn btn-primary">Explore Models</a>
+    </div>
+</header>
+
+<!-- Models Section -->
+<section id="models" class="section py-5">
+    <div class="container text-center">
+        <h2>Our Models</h2>
+        <div class="row align-items-center">
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <!-- Left Arrow Button -->
+                <button class="arrow-button left-arrow" onclick="previousModel()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <!-- Image Display and Model Info -->
+                <div class="col-md-8 mx-auto">
+                    <div class="image-display mb-4">
+                        <img id="modelImage" src="images/Bentley Continental GT.jpg" alt="Model Image" class="img-fluid rounded large-image" onclick="openImageModal()" />
+                    </div>
+                    <div class="thumbnail-navigation d-flex justify-content-center mb-4" id="thumbnails"></div>
+                    <div class="model-info">
+                        <h3 id="modelTitle">Rolls-Royce Phantom</h3>
+                        <p id="modelPrice">$450,000</p>
+                        <button class="btn btn-primary add-to-cart-btn" onclick="addToCart()">Add to Cart</button>
+                    </div>
+                </div>
+
+                <!-- Right Arrow Button -->
+                <button class="arrow-button right-arrow" onclick="nextModel()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal for Enlarged Image -->
+<div id="imageModal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Model Image</h5>
+                <button type="button" class="close" onclick="closeImageModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="images/Bentley Continental GT.jpg" alt="Enlarged Model Image" class="img-fluid" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const models = [
+        { name: "Rolls-Royce Ghost", price: "$350,000", image: "images/Rolls-Royce Ghost.jpeg" },
+        { name: "Rolls-Royce Cullinan", price: "$325,000", image: "images/Rolls-Royce Cullinan.webp" },
+        { name: "Bentley Continental GT", price: "$230,000", image: "images/Bentley Continental GT.jpg" },
+        { name: "Porsche 911", price: "$100,000", image: "images/Porsche 911.avif" }
+    ];
+
+    let currentIndex = 0;
+
+    // Load initial model and thumbnails
+    loadModel(currentIndex);
+    loadThumbnails();
+
+    function loadModel(index) {
+        document.getElementById("modelImage").src = models[index].image;
+        document.getElementById("modelTitle").textContent = models[index].name;
+        document.getElementById("modelPrice").textContent = models[index].price;
+        document.getElementById("modalImage").src = models[index].image; // Update modal image source
+    }
+
+    function loadThumbnails() {
+        const thumbnails = document.getElementById("thumbnails");
+        thumbnails.innerHTML = ''; // Clear previous thumbnails
+        models.forEach((model, index) => {
+            const thumbnail = document.createElement("img");
+            thumbnail.src = model.image;
+            thumbnail.alt = model.name;
+            thumbnail.className = "rounded thumbnail";
+            thumbnail.onclick = () => {
+                currentIndex = index;
+                loadModel(currentIndex);
+            };
+            thumbnails.appendChild(thumbnail);
+        });
+    }
+
+    function previousModel() {
+        currentIndex = (currentIndex - 1 + models.length) % models.length;
+        loadModel(currentIndex);
+    }
+
+    function nextModel() {
+        currentIndex = (currentIndex + 1) % models.length;
+        loadModel(currentIndex);
+    }
+
+    function addToCart() {
+        alert(`${models[currentIndex].name} has been added to your cart!`);
+    }
+
+    function openImageModal() {
+        document.getElementById("imageModal").style.display = "block"; // Show modal
+    }
+
+    function closeImageModal() {
+        document.getElementById("imageModal").style.display = "none"; // Hide modal
+    }
+</script>
+<!-- About Section -->
+<section id="about" class="section py-5">
+    <div class="container text-center">
+        <h2>About Us</h2>
+        <p>At Kelvopz Luxury Cars, we provide the finest selection of luxury vehicles, combining elegance and performance for a superior driving experience. Our passion for cars drives us to offer only the best.</p>
+    </div>
+</section>
+
+
+<!-- Contact Section -->
+<section id="contact" class="section py-5">
+    <div class="container text-center">
+        <h2>Contact Us</h2>
+        <form id="contactForm" class="form-inline">
+            <div class="form-group mb-3">
+                <input type="text" class="form-control" placeholder="Your Name" name="name" required>
+            </div>
+            <div class="form-group mb-3">
+                <input type="email" class="form-control" placeholder="Your Email" name="email" required>
+            </div>
+            <div class="form-group mb-3">
+                <textarea class="form-control" placeholder="Your Message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    // JavaScript to handle form submission
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+        alert('Thank you! We will reach out to you soon.'); // Alert the user
+        this.reset(); // Optionally reset the form fields
+    });
+</script>
+
+
+</body>
+<!-- Footer Section -->
+<footer class="footer bg-dark text-white text-center py-4">
+    <div class="container">
+        <p>&copy; 2024 Kelvopz Luxury Cars. Designed by Kalyan Babu Allamudi. All rights reserved.</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#about" class="text-white">About Us</a></li>
+            <li class="list-inline-item"><a href="#contact" class="text-white">Contact</a></li>
+            <li class="list-inline-item"><a href="#" class="text-white">Privacy Policy</a></li>
+            <li class="list-inline-item"><a href="#" class="text-white">Terms of Service</a></li>
+        </ul>
+        <div class="social-media mt-3">
+            <a href="index.html" target="_blank" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+            <a href="index.html" target="_blank" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+            <a href="index.html" target="_blank" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+            <a href="index.html" target="_blank" class="text-white me-3"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
